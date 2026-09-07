@@ -1,0 +1,12 @@
+import time
+def fac(n):
+    if (n == 0):
+         return 1;
+    else:
+         return n*fac(n-1)    
+
+a=100
+print(fac(a))
+print(time.time())
+        
+    
