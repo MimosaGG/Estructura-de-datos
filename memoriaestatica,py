@@ -1,0 +1,9 @@
+def memoriaestatica():
+    calificaciones = [0]*5
+    for n in range(5):
+        calificaciones[n] = float(input("Ingresa la calificacion: "))
+        
+    return calificaciones
+
+memoriaestatica()
+    
