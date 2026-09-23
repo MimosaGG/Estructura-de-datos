@@ -1,0 +1,66 @@
+import time
+import random
+
+class Arreglos:
+    def __init__(self):
+        # Nombres de las 6 materias
+        self.nombres_materias = [
+            "Matemáticas", "Física", "Química", 
+            "Programación", "Base de Datos", "Administración"
+        ]
+        
+        
+        self.matriz = [[0 for _ in range(500)] for _ in range(6)]
+        
+        
+        random.seed(42)
+        for f in range(6):
+            for c in range(500):
+                self.matriz[f][c] = random.randint(70, 100)
+
+    def mostrar_tabla_completa(self):
+        
+        print("\n" + "="*95)
+        print(f"{'Alumno':<8} | " + " | ".join([f"{m[:12]:<12}" for m in self.nombres_materias]))
+        print("="*95)
+        
+        
+        for c in range(500):
+            alumno_id = c + 1
+            fila_str = f"{alumno_id:<8} | "
+           
+            for f in range(6):
+                calif = self.matriz[f][c]
+                fila_str += f"{calif:<12} | "
+            print(fila_str)
+        print("="*95 + "\n")
+
+    def buscar_calificacion(self, materia_num, alumno_num):
+        
+        inicio = time.perf_counter()
+        
+        
+        fila = materia_num - 1
+        columna = alumno_num - 1
+        
+        calificacion = self.matriz[fila][columna]
+        nombre_materia = self.nombres_materias[fila]
+        
+        fin = time.perf_counter()
+        tiempo_micro = (fin - inicio) * 1_000_000
+        
+        
+        print(f"--- BÚSQUEDA DIRECTA ---")
+        print(f"Buscando al Alumno {alumno_num} en la Materia {materia_num} ({nombre_materia})...")
+        print(f"Calificación encontrada: {calificacion}")
+        print(f"Tiempo de búsqueda: {tiempo_micro:.4f} microsegundos \n")
+
+
+if __name__ == "__main__":
+    sistema = Arreglos()
+    
+   
+    sistema.mostrar_tabla_completa()
+    
+    
+    sistema.buscar_calificacion(materia_num=4, alumno_num=441)
