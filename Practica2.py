@@ -9,7 +9,7 @@ class Order:
     self.qtty = qtty
 
   def impresion(self):
-    # Ojo: como qtty suele ser un número (int), usamos f-strings de forma segura con comas o convertimos a str
+    
     print(f"Customer: {self.customer}")
     print(f"Quantity: {self.qtty}")
     print("------------------------")
@@ -24,12 +24,12 @@ class Order:
 class Node:
 
   def __init__(self, info: Any):
-    self.info = info  # Corregido a minúscula para coincidir
+    self.info = info  
     self.next: Optional["Node"] = None
 
 
 class QueueInterface(ABC):
-  #"""La interfaz solo define los métodos que son obligatorios"""
+  
 
   @abstractmethod
   def size(self) -> int:
@@ -57,7 +57,6 @@ class QueueInterface(ABC):
 
 
 class Queue(QueueInterface):
-  """Esta es la implementación real de la cola"""
 
   def __init__(self):
     self.head: Optional[Node] = None
@@ -83,7 +82,7 @@ class Queue(QueueInterface):
     else:
       self.tail.next = new_node
       self.tail = new_node
-    self._size += 1  # El incremento del tamaño iba dentro del else, ahora incrementa siempre
+    self._size += 1  
 
   def dequeue(self) -> Optional[Any]:
     if self.isEmpty():
@@ -96,7 +95,7 @@ class Queue(QueueInterface):
     return temp.info
 
   def printInfo(self) -> None:
-    # La sangría corregida para que pertenezca a este método
+    
     current = self.head
     print(f"\n--- Queue Info (Tamaño: {self.size()}) ---")
     if self.isEmpty():
@@ -111,15 +110,14 @@ class Queue(QueueInterface):
     print("------------------------------------------\n")
 
 
-# --- Ejemplo de prueba rápida para verificar que arranca ---
+
 if __name__ == "__main__":
   mi_cola = Queue()
 
-  # Agregando órdenes
+
   mi_cola.enqueue(Order("Monica Jimena",9))
   mi_cola.enqueue(Order("Ana Pérez", 6))
   mi_cola.enqueue(Order("Antonio Galvez", 8))
   
 
-  # Imprimiendo la cola
   mi_cola.printInfo()
