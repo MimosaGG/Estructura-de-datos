@@ -2,15 +2,15 @@
 class Nodo:
     def __init__(self, dato):
         self.dato = dato
-        self.sig = None          # None = NIL
+        self.sig = None         
 
 
 class Postre:
-    """Elemento del arreglo: nombre + cabeza de la lista de ingredientes."""
+    
 
     def __init__(self, nombre):
         self.nombre = nombre
-        self.cabeza = None       # None = NIL
+        self.cabeza = None       
 
     def ingredientes(self):
         lista, p = [], self.cabeza
@@ -28,7 +28,7 @@ class Postre:
         return False
 
     def agregar(self, ingrediente):
-        """Agrega al final. Devuelve False si ya existía."""
+       
         if self.tiene(ingrediente):
             return False
         nuevo = Nodo(ingrediente)
@@ -42,7 +42,7 @@ class Postre:
         return True
 
     def quitar(self, ingrediente):
-        """Elimina el ingrediente. Devuelve False si no estaba."""
+       
         ant, p = None, self.cabeza
         while p:
             if clave(p.dato) == clave(ingrediente):
@@ -56,7 +56,7 @@ class Postre:
 
 
 def clave(texto):
-    """Normaliza para comparar: sin espacios de más y sin mayúsculas."""
+    
     return " ".join(texto.split()).lower()
 
 
@@ -64,10 +64,9 @@ def limpiar(texto):
     return " ".join(texto.split())
 
 
-# ------------------------------------------------------------ búsqueda binaria
+
 def buscar(postres, nombre):
-    """Devuelve (encontrado, posición). Si no existe, la posición es donde
-    debe insertarse para mantener el orden alfabético."""
+
     k = clave(nombre)
     ini, fin = 0, len(postres) - 1
     while ini <= fin:
@@ -82,8 +81,8 @@ def buscar(postres, nombre):
     return False, ini
 
 
-# ------------------------------------------------------------- Ejercicio 1
-def imprimir_ingredientes(postres, nombre):                       # a)
+
+def imprimir_ingredientes(postres, nombre):                       
     if not postres:
         return "El arreglo POSTRES está vacío."
     if not clave(nombre):
@@ -98,7 +97,7 @@ def imprimir_ingredientes(postres, nombre):                       # a)
            "\n".join(f"  - {i}" for i in ings)
 
 
-def insertar_ingredientes(postres, nombre, nuevos):               # b)
+def insertar_ingredientes(postres, nombre, nuevos):               
     ok, pos = buscar(postres, nombre)
     if not ok:
         return f"Error: el postre '{limpiar(nombre)}' no existe."
@@ -116,7 +115,7 @@ def insertar_ingredientes(postres, nombre, nuevos):               # b)
     return msg.strip()
 
 
-def eliminar_ingrediente(postres, nombre, ingrediente):           # c)
+def eliminar_ingrediente(postres, nombre, ingrediente):           
     ok, pos = buscar(postres, nombre)
     if not ok:
         return f"Error: el postre '{limpiar(nombre)}' no existe."
@@ -129,7 +128,7 @@ def eliminar_ingrediente(postres, nombre, ingrediente):           # c)
     return f"Error: '{limpiar(ingrediente)}' no es ingrediente de '{postres[pos].nombre}'."
 
 
-def alta_postre(postres, nombre, ingredientes):                   # d)
+def alta_postre(postres, nombre, ingredientes):                   
     nombre = limpiar(nombre)
     if not nombre:
         return "Error: el nombre del postre no puede estar vacío."
@@ -141,44 +140,37 @@ def alta_postre(postres, nombre, ingredientes):                   # d)
         return f"Error: el postre '{postres[pos].nombre}' ya existe."
     nuevo = Postre(nombre)
     for ing in ings:
-        nuevo.agregar(ing)               # ignora ingredientes repetidos
-    postres.insert(pos, nuevo)           # se inserta en su lugar alfabético
+        nuevo.agregar(ing)               
+    postres.insert(pos, nuevo)           
     return f"Alta de '{nombre}' con {len(nuevo.ingredientes())} ingrediente(s)."
 
 
-def baja_postre(postres, nombre):                                 # e)
+def baja_postre(postres, nombre):                                 
     if not postres:
         return "Error: el arreglo POSTRES está vacío."
     ok, pos = buscar(postres, nombre)
     if not ok:
         return f"Error: el postre '{limpiar(nombre)}' no existe."
     nombre_real = postres[pos].nombre
-    del postres[pos]                     # los demás se recorren una posición
+    del postres[pos]                    
     return f"Baja de '{nombre_real}' (con todos sus ingredientes)."
 
 
-# ------------------------------------------------------------- Ejercicio 2
+
 def eliminar_repetidos(postres):
-    """
-    Elimina de forma automática todo lo repetido en POSTRES:
-      1) postres con el mismo nombre -> se deja uno solo y se mezclan sus
-         ingredientes;
-      2) ingredientes repetidos dentro de la lista de cada postre.
-    Devuelve (postres_eliminados, ingredientes_eliminados).
-    """
-    # 1) postres repetidos (el arreglo se ordena para que queden juntos)
+
     postres.sort(key=lambda p: clave(p.nombre))
     unicos, post_elim = [], 0
     for p in postres:
         if unicos and clave(unicos[-1].nombre) == clave(p.nombre):
             for ing in p.ingredientes():
-                unicos[-1].agregar(ing)  # agrega solo los que no estaban
+                unicos[-1].agregar(ing)  
             post_elim += 1
         else:
             unicos.append(p)
     postres[:] = unicos
 
-    # 2) ingredientes repetidos dentro de cada lista enlazada
+
     ing_elim = 0
     for p in postres:
         actual = p.cabeza
@@ -186,7 +178,7 @@ def eliminar_repetidos(postres):
             ant, q = actual, actual.sig
             while q:
                 if clave(q.dato) == clave(actual.dato):
-                    ant.sig = q.sig      # se desenlaza el nodo repetido
+                    ant.sig = q.sig      
                     ing_elim += 1
                 else:
                     ant = q
@@ -195,7 +187,7 @@ def eliminar_repetidos(postres):
     return post_elim, ing_elim
 
 
-# --------------------------------------------------------------- utilidades
+
 def mostrar_todo(postres):
     if not postres:
         return "POSTRES está vacío."
@@ -219,7 +211,7 @@ def cargar_ejemplo_con_repetidos(postres):
     postres.clear()
     for nombre, ings in datos.items():
         p = Postre(nombre)
-        for ing in ings:                 # inserción cruda: permite repetidos
+        for ing in ings:                 
             nuevo = Nodo(ing)
             if p.cabeza is None:
                 p.cabeza = nuevo
@@ -228,14 +220,14 @@ def cargar_ejemplo_con_repetidos(postres):
                 while q.sig:
                     q = q.sig
                 q.sig = nuevo
-        postres.append(p)                # sin ordenar ni validar
+        postres.append(p)               
 
 
 def pedir_lista(texto):
     return [x for x in input(texto).split(",")]
 
 
-# ------------------------------------------------------------------- menú
+
 MENU = """
 ===== POSTRES =====
  1. Imprimir ingredientes de un postre
